@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 wgpu = "30.0.1"
 tokio = { version = "1.53.0", features = ["full"] }
+winit = "0.30.13"

@@ -1,5 +1,6 @@
 use wgpu::{
-    Adapter, Device, DeviceDescriptor, ExperimentalFeatures, Features, Label, Limits, Queue, RequestDeviceError, Trace,
+    Adapter, Device, DeviceDescriptor, ExperimentalFeatures, Features, Label, Limits, Queue,
+    RequestDeviceError, Trace,
 };
 
 pub fn get_wgpu_device(

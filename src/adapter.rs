@@ -12,7 +12,7 @@ pub fn get_wgpu_adapter(
         } else {
             PowerPreference::HighPerformance
         },
-        compatible_surface: Some(&surface),
+        compatible_surface: Some(surface),
         force_fallback_adapter: false,
         apply_limit_buckets: true,
     })

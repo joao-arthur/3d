@@ -4,13 +4,17 @@ use winit::{
 };
 
 use crate::{
-    adapter::get_wgpu_adapter, device::get_wgpu_device, instance::get_wgpu_instance, pipeline_layout::get_wgpu_pipeline_layout, window::get_winit_window,
+    adapter::get_wgpu_adapter, device::get_wgpu_device, instance::get_wgpu_instance,
+    pipeline_layout::get_wgpu_pipeline_layout, pipeline_render::get_wgpu_pipeline_render,
+    shader_module::get_wgpu_shader_module, window::get_winit_window,
 };
 
 mod adapter;
 mod device;
 mod instance;
 mod pipeline_layout;
+mod pipeline_render;
+mod shader_module;
 mod window;
 
 #[derive(Debug, PartialEq, Default)]
@@ -24,10 +28,13 @@ impl ApplicationHandler for App {
         let surface = instance.create_surface(window).unwrap();
         let adapter = pollster::block_on(get_wgpu_adapter(&instance, &surface)).unwrap();
         // let capabilities = surface.get_capabilities(&adapter);
-        let config = surface.get_default_config(&adapter, size.width, size.height).unwrap();
+        let surface_config = surface.get_default_config(&adapter, size.width, size.height).unwrap();
         let (device, queue) = pollster::block_on(get_wgpu_device(&adapter)).unwrap();
-        surface.configure(&device, &config);
+        surface.configure(&device, &surface_config);
+        let shader_module = get_wgpu_shader_module(&device);
         let pipeline_layout = get_wgpu_pipeline_layout(&device);
+        let pipeline_render =
+            get_wgpu_pipeline_render(&device, &pipeline_layout, &surface_config, &shader_module);
     }
 
     fn window_event(

@@ -16,6 +16,7 @@ mod pipeline_layout;
 mod pipeline_render;
 mod shader_module;
 mod window;
+mod render_pass;
 
 #[derive(Debug, PartialEq, Default)]
 struct App {}
@@ -33,8 +34,7 @@ impl ApplicationHandler for App {
         surface.configure(&device, &surface_config);
         let shader_module = get_wgpu_shader_module(&device);
         let pipeline_layout = get_wgpu_pipeline_layout(&device);
-        let pipeline_render =
-            get_wgpu_pipeline_render(&device, &pipeline_layout, &surface_config, &shader_module);
+        // let pipeline_render = get_wgpu_pipeline_render(&device, &pipeline_layout, &surface_config, &shader_module);
     }
 
     fn window_event(

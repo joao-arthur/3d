@@ -1,5 +1,8 @@
 use wgpu::{
-    BlendState, ColorTargetState, ColorWrites, Device, Face, FragmentState, FrontFace, MultisampleState, PipelineCompilationOptions, PipelineLayout, PolygonMode, PrimitiveState, PrimitiveTopology, RenderPipeline, RenderPipelineDescriptor, ShaderModule, SurfaceConfiguration, VertexState,
+    BlendState, ColorTargetState, ColorWrites, Device, Face, FragmentState, FrontFace,
+    MultisampleState, PipelineCompilationOptions, PipelineLayout, PolygonMode, PrimitiveState,
+    PrimitiveTopology, RenderPipeline, RenderPipelineDescriptor, ShaderModule,
+    SurfaceConfiguration, VertexState,
 };
 
 pub fn get_wgpu_pipeline_render(
@@ -29,11 +32,7 @@ pub fn get_wgpu_pipeline_render(
         }),
         cache: None,
         depth_stencil: None,
-        multisample: MultisampleState {
-            count: 1,
-            mask: !0,
-            alpha_to_coverage_enabled: false,
-        },
+        multisample: MultisampleState { count: 1, mask: !0, alpha_to_coverage_enabled: false },
         multiview_mask: None,
         primitive: PrimitiveState {
             topology: PrimitiveTopology::TriangleList,
@@ -43,6 +42,6 @@ pub fn get_wgpu_pipeline_render(
             unclipped_depth: false,
             polygon_mode: PolygonMode::Fill,
             conservative: false,
-        }
+        },
     })
 }

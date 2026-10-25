@@ -14,7 +14,7 @@ pub fn get_wgpl_render_pass_descriptor<'a>(
             resolve_target: None,
             depth_slice: None,
             ops: Operations {
-                load: LoadOp::Clear(Color { r: 0.1, g: 0.2, b: 0.3, a: 1.0 }),
+                load: LoadOp::Clear(Color { r: 0.2, g: 0.4, b: 0.7, a: 1.0 }),
                 store: StoreOp::Store,
             },
         })],

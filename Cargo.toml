@@ -9,3 +9,6 @@ pollster = "1.0.1"
 tokio = { version = "1.53.0", features = ["full"] }
 wgpu = "30.0.1"
 winit = "0.30.13"
+glam = "0.34.1"
+gltf = "1.4.1"
+bytemuck = "1.25.2"

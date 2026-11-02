@@ -1,4 +1,6 @@
-use wgpu::{Device, Extent3d, Texture, TextureDescriptor, TextureDimension, TextureFormat, TextureUsages};
+use wgpu::{
+    Device, Extent3d, Texture, TextureDescriptor, TextureDimension, TextureFormat, TextureUsages,
+};
 
 pub fn get_wgpu_texture(device: &Device, width: u32, height: u32) -> Texture {
     device.create_texture(&TextureDescriptor {

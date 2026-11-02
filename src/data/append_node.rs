@@ -17,7 +17,8 @@ pub fn append_node(
             if primitive.mode() != gltf::mesh::Mode::Triangles {
                 continue;
             }
-            let reader = primitive.reader(|buffer| buffers.get(buffer.index()).map(|data| data.0.as_slice()));
+            let reader = primitive
+                .reader(|buffer| buffers.get(buffer.index()).map(|data| data.0.as_slice()));
             let Some(positions) = reader.read_positions() else {
                 continue;
             };

@@ -3,8 +3,8 @@ use winit::event_loop::{ControlFlow, EventLoop};
 use crate::app::app::App;
 
 mod app;
-mod state;
 mod data;
+mod state;
 
 #[tokio::main]
 async fn main() -> Result<(), ()> {

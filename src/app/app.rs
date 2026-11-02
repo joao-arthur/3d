@@ -1,11 +1,15 @@
 use winit::{
-    application::ApplicationHandler,
-    event::WindowEvent,
-    event_loop::ActiveEventLoop,
+    application::ApplicationHandler, event::WindowEvent, event_loop::ActiveEventLoop,
     window::WindowId,
 };
 
-use crate::{app::{render::app_render, resize::app_resize}, state::{setup::{SetupError, state_setup}, state::State}};
+use crate::{
+    app::{render::app_render, resize::app_resize},
+    state::{
+        setup::{SetupError, state_setup},
+        state::State,
+    },
+};
 
 #[derive(Default)]
 pub struct App {
@@ -21,26 +25,24 @@ impl ApplicationHandler for App {
         match result {
             Ok(app_state) => {
                 self.state = Some(app_state);
-            },
-            Err(state_setup_err) => {
-                match state_setup_err {
-                    SetupError::CreateWindow => {
-                        println!("CreateWindow");
-                    }
-                    SetupError::CreateSurface => {
-                        println!("CreateSurface");
-                    }
-                    SetupError::CreateAdapter => {
-                        println!("CreateAdapter");
-                    }
-                    SetupError::CreateDevice => {
-                        println!("CreateDevice");
-                    }
-                    SetupError::CreateSurfaceConfig => {
-                        println!("CreateSurfaceConfig");
-                    }
-                }
             }
+            Err(state_setup_err) => match state_setup_err {
+                SetupError::CreateWindow => {
+                    println!("CreateWindow");
+                }
+                SetupError::CreateSurface => {
+                    println!("CreateSurface");
+                }
+                SetupError::CreateAdapter => {
+                    println!("CreateAdapter");
+                }
+                SetupError::CreateDevice => {
+                    println!("CreateDevice");
+                }
+                SetupError::CreateSurfaceConfig => {
+                    println!("CreateSurfaceConfig");
+                }
+            },
         }
     }
 

@@ -1,13 +1,18 @@
 use glam::{Mat4, Vec3};
 use wgpu::{
-BufferUsages, Device, util::{BufferInitDescriptor, DeviceExt},
+    BufferUsages, Device,
+    util::{BufferInitDescriptor, DeviceExt},
 };
 
 use crate::data::{append_node::append_node, model::Model};
 
 pub fn get_model(device: &Device) -> Model {
-    let (document, buffers, _images) = gltf::import("assets/tree.glb").expect("Failed to load assets/tree.glb");
-    let scene = document.default_scene().or_else(|| document.scenes().next()).expect("GLB contains no scene");
+    let (document, buffers, _images) =
+        gltf::import("assets/tree.glb").expect("Failed to load assets/tree.glb");
+    let scene = document
+        .default_scene()
+        .or_else(|| document.scenes().next())
+        .expect("GLB contains no scene");
     let mut vertices = Vec::new();
     let mut indices = Vec::new();
     for node in scene.nodes() {

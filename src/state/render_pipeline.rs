@@ -6,13 +6,13 @@ pub fn get_wgpu_render_pipeline(
     device: &Device,
     pipeline_layout: &PipelineLayout,
     shader: &ShaderModule,
-    texture_format: &TextureFormat
+    texture_format: &TextureFormat,
 ) -> RenderPipeline {
     device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
         label: Some("Tree Render Pipeline"),
-        layout: Some(&pipeline_layout),
+        layout: Some(pipeline_layout),
         vertex: wgpu::VertexState {
-            module: &shader,
+            module: shader,
             entry_point: Some("vs_main"),
             compilation_options: Default::default(),
             buffers: &[Some(Vertex::layout())],
@@ -35,7 +35,7 @@ pub fn get_wgpu_render_pipeline(
         }),
         multisample: wgpu::MultisampleState::default(),
         fragment: Some(wgpu::FragmentState {
-            module: &shader,
+            module: shader,
             entry_point: Some("fs_main"),
             compilation_options: Default::default(),
             targets: &[Some(wgpu::ColorTargetState {

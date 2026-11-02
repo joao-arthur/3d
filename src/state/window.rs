@@ -1,8 +1,4 @@
-use winit::{
-    error::OsError,
-    event_loop::ActiveEventLoop,
-    window::Window,
-};
+use winit::{error::OsError, event_loop::ActiveEventLoop, window::Window};
 
 pub fn get_winit_window(event_loop: &ActiveEventLoop) -> Result<Window, OsError> {
     event_loop.create_window(

@@ -25,10 +25,15 @@ pub fn app_render(state: &mut State) {
     let up = Vec3::Y;
     let view_matrix = glam::camera::rh::view::look_at_mat4(eye, target, up);
     let aspect = state.surface_config.width as f32 / state.surface_config.height as f32;
-    let projection_matrix = glam::camera::rh::proj::directx::perspective(45.0_f32.to_radians(), aspect, 0.1, 100.0);
+    let projection_matrix =
+        glam::camera::rh::proj::directx::perspective(45.0_f32.to_radians(), aspect, 0.1, 100.0);
     let model_matrix = Mat4::IDENTITY;
     let mvp = projection_matrix * view_matrix * model_matrix;
-    state.queue.write_buffer(&state.uniform_buffer, 0, bytemuck::bytes_of(&Uniforms { mvp: mvp.to_cols_array_2d() }));
+    state.queue.write_buffer(
+        &state.uniform_buffer,
+        0,
+        bytemuck::bytes_of(&Uniforms { mvp: mvp.to_cols_array_2d() }),
+    );
     let mut encoder = state.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
         label: Some("Tree Render Encoder"),
     });
@@ -40,12 +45,7 @@ pub fn app_render(state: &mut State) {
                 depth_slice: None,
                 resolve_target: None,
                 ops: wgpu::Operations {
-                    load: wgpu::LoadOp::Clear(wgpu::Color {
-                        r: 0.08,
-                        g: 0.10,
-                        b: 0.14,
-                        a: 1.0,
-                    }),
+                    load: wgpu::LoadOp::Clear(wgpu::Color { r: 0.08, g: 0.10, b: 0.14, a: 1.0 }),
                     store: wgpu::StoreOp::Store,
                 },
             })],

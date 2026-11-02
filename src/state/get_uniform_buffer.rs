@@ -1,6 +1,9 @@
 use bytemuck::bytes_of;
 use glam::Mat4;
-use wgpu::{Buffer, BufferUsages, Device, util::{BufferInitDescriptor, DeviceExt}};
+use wgpu::{
+    Buffer, BufferUsages, Device,
+    util::{BufferInitDescriptor, DeviceExt},
+};
 
 use crate::data::uniforms::Uniforms;
 

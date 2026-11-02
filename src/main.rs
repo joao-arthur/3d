@@ -1,23 +1,10 @@
+use winit::event_loop::{ControlFlow, EventLoop};
 
-use winit::{
-    event_loop::{ControlFlow, EventLoop},
-};
+use crate::app::app::App;
 
-use crate::app::App;
-
-mod adapter;
-mod command_encoder;
-mod device;
-mod instance;
-mod pipeline_layout;
-mod pipeline_render;
-mod render_pass;
-mod shader_module;
-mod window;
-mod load_model;
-mod model;
-mod vertex;
 mod app;
+mod state;
+mod data;
 
 #[tokio::main]
 async fn main() -> Result<(), ()> {

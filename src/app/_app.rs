@@ -1,8 +1,10 @@
-
-use wgpu::{Buffer, Device, Instance, Queue, RenderPipeline, Surface, SurfaceConfiguration};
+use wgpu::{
+    Buffer, Device, Instance, Queue, RenderPipeline, Surface, SurfaceConfiguration,
+    TextureViewDescriptor,
+};
 use winit::{
-    application::ApplicationHandler,
-    event::WindowEvent,
+    application::ApplicationHandler, event::WindowEvent, event_loop::ActiveEventLoop,
+    window::WindowId,
 };
 
 use crate::{
@@ -20,22 +22,23 @@ pub struct App<'a> {
     surface_config: Option<SurfaceConfiguration>,
     surface: Option<Surface<'a>>,
     pipeline_render: Option<RenderPipeline>,
-    vertex_buffer: Option<Buffer>
+    vertex_buffer: Option<Buffer>,
 }
 
 impl<'a> ApplicationHandler for App<'a> {
-    fn resumed(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
-        let window = get_winit_window(event_loop).map_err(|_| ()).unwrap();
-        let instance = get_wgpu_instance();
-        let size = window.inner_size();
-        let surface = instance.create_surface(window).unwrap();
-        let adapter = pollster::block_on(get_wgpu_adapter(&instance, &surface)).unwrap();
-        let surface_config = surface.get_default_config(&adapter, size.width, size.height).unwrap();
-        let (device, queue) = pollster::block_on(get_wgpu_device(&adapter)).unwrap();
+    fn resumed(&mut self, event_loop: &ActiveEventLoop) {
+        // let window = get_winit_window(event_loop).map_err(|_| ()).unwrap();
+        // let instance = get_wgpu_instance();
+        // let size = window.inner_size();
+        // let surface = instance.create_surface(window).unwrap();
+        // let adapter = pollster::block_on(get_wgpu_adapter(&instance, &surface)).unwrap();
+        // let surface_config = surface.get_default_config(&adapter, size.width, size.height).unwrap();
+        // let (device, queue) = pollster::block_on(get_wgpu_device(&adapter)).unwrap();
         surface.configure(&device, &surface_config);
         let shader_module = get_wgpu_shader_module(&device);
         let pipeline_layout = get_wgpu_pipeline_layout(&device);
-        let pipeline_render = get_wgpu_pipeline_render(&device, &pipeline_layout, &surface_config, &shader_module);
+        let pipeline_render =
+            get_wgpu_pipeline_render(&device, &pipeline_layout, &surface_config, &shader_module);
         self.instance = Some(instance);
         self.device = Some(device);
         self.queue = Some(queue);
@@ -46,9 +49,9 @@ impl<'a> ApplicationHandler for App<'a> {
 
     fn window_event(
         &mut self,
-        event_loop: &winit::event_loop::ActiveEventLoop,
-        _window_id: winit::window::WindowId,
-        event: winit::event::WindowEvent,
+        event_loop: &ActiveEventLoop,
+        _window_id: WindowId,
+        event: WindowEvent,
     ) {
         match event {
             WindowEvent::CloseRequested => {
@@ -100,8 +103,10 @@ impl<'a> ApplicationHandler for App<'a> {
                 };
                 let mut command_encoder = get_wgpl_command_encoder(device);
                 {
-                    let texture_view = surface_texture.texture.create_view(&wgpu::TextureViewDescriptor::default());
-                    let mut render_pass = get_wgpl_render_pass_descriptor(&mut command_encoder, &texture_view);
+                    let texture_view =
+                        surface_texture.texture.create_view(&TextureViewDescriptor::default());
+                    let mut render_pass =
+                        get_wgpl_render_pass_descriptor(&mut command_encoder, &texture_view);
                     render_pass.set_pipeline(&pipeline_render);
                     render_pass.draw(0..3, 0..1);
                 }

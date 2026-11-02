@@ -1,6 +1,6 @@
 use wgpu::{
-    Adapter, Device, DeviceDescriptor, ExperimentalFeatures, Features, Label, Limits, Queue,
-    RequestDeviceError, Trace,
+    Adapter, Device, DeviceDescriptor, ExperimentalFeatures, Features, Label, Limits, MemoryHints,
+    Queue, RequestDeviceError, Trace,
 };
 
 pub fn get_wgpu_device(
@@ -11,7 +11,7 @@ pub fn get_wgpu_device(
         required_features: Features::empty(),
         experimental_features: ExperimentalFeatures::disabled(),
         required_limits: Limits::default(),
-        memory_hints: Default::default(),
+        memory_hints: MemoryHints::default(),
         trace: Trace::Off,
     })
 }

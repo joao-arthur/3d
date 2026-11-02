@@ -3,15 +3,11 @@ use std::sync::Arc;
 use winit::event_loop::ActiveEventLoop;
 
 use crate::state::{
-    get_depth_buffer::get_depth_buffer,
-    get_model::get_model,
+    get_depth_buffer::get_depth_buffer, get_model::get_model,
     get_uniform_bind_group::get_uniform_bind_group,
     get_uniform_bind_group_layout::get_uniform_bind_group_layout,
-    get_uniform_buffer::get_uniform_buffer,
-    pipeline_layout::get_wgpu_pipeline_layout,
-    render_pipeline::get_wgpu_render_pipeline,
-    shader_module::get_wgpu_shader_module,
-    state::State,
+    get_uniform_buffer::get_uniform_buffer, pipeline_layout::get_wgpu_pipeline_layout,
+    render_pipeline::get_wgpu_render_pipeline, shader_module::get_wgpu_shader_module, state::State,
 };
 
 use super::{

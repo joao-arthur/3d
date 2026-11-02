@@ -35,7 +35,6 @@ pub fn get_model(device: &Device) -> Model {
         let position = Vec3::from_array(vertex.position);
         vertex.position = ((position - center) * scale).to_array();
     }
-    println!("Loaded tree: {} vertices, {} indices", vertices.len(), indices.len(),);
     let vertex_buffer = device.create_buffer_init(&BufferInitDescriptor {
         label: Some("Tree Vertex Buffer"),
         contents: bytemuck::cast_slice(&vertices),

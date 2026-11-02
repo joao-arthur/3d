@@ -1,4 +1,5 @@
 mod adapter;
+pub mod command_encoder;
 mod device;
 pub mod get_depth_buffer;
 mod get_model;
@@ -7,6 +8,7 @@ mod get_uniform_bind_group_layout;
 mod get_uniform_buffer;
 mod instance;
 mod pipeline_layout;
+pub mod render_pass;
 mod render_pipeline;
 pub mod setup;
 mod shader_module;

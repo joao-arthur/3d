@@ -1,4 +1,6 @@
-use wgpu::{Adapter, CompositeAlphaMode, Surface, SurfaceConfiguration, TextureFormat};
+use wgpu::{
+    Adapter, CompositeAlphaMode, PresentMode, Surface, SurfaceConfiguration, TextureFormat,
+};
 
 pub fn get_wgpu_surface_config(
     surface: &Surface,
@@ -9,7 +11,7 @@ pub fn get_wgpu_surface_config(
 ) -> Option<SurfaceConfiguration> {
     let mut surface_config = surface.get_default_config(adapter, width, height)?;
     surface_config.format = texture_format;
-    surface_config.present_mode = wgpu::PresentMode::Fifo;
+    surface_config.present_mode = PresentMode::Fifo;
     surface_config.alpha_mode = alpha_mode;
     Some(surface_config)
 }

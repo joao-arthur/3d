@@ -15,7 +15,7 @@ pub fn get_wpgu_render_pass<'a>(
             depth_slice: None,
             resolve_target: None,
             ops: Operations {
-                load: LoadOp::Clear(Color { r: 0.08, g: 0.10, b: 0.14, a: 1.0 }),
+                load: LoadOp::Clear(Color { r: 0.1, g: 0.50, b: 0.51, a: 1.0 }),
                 store: StoreOp::Store,
             },
         })],

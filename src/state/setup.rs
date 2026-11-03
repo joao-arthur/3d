@@ -52,7 +52,7 @@ pub async fn state_setup(event_loop: &ActiveEventLoop) -> Result<State, SetupErr
     let pipeline_layout = get_wgpu_pipeline_layout(&device, &uniform_bind_group_layout);
     let render_pipeline =
         get_wgpu_render_pipeline(&device, &pipeline_layout, &shader_module, &texture_format);
-    let (texture, texture_view) = get_depth_buffer(&device, size.width, size.height);
+    let (texture, texture_view) = get_depth_buffer(&device, (size.width, size.height));
 
     Ok(State {
         window,

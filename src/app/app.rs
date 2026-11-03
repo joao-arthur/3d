@@ -63,7 +63,7 @@ impl ApplicationHandler for App {
                 event_loop.exit();
             }
             WindowEvent::Resized(size) => {
-                app_resize(state, size.width, size.height);
+                app_resize(state, (size.width, size.height));
             }
             WindowEvent::RedrawRequested => {
                 app_render(state);

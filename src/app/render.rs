@@ -1,3 +1,5 @@
+use std::sync::atomic::{AtomicUsize, Ordering};
+
 use bytemuck::bytes_of;
 use glam::{Mat4, Vec3, camera};
 use wgpu::{CurrentSurfaceTexture, IndexFormat, TextureViewDescriptor};
@@ -9,7 +11,11 @@ use crate::{
     },
 };
 
+static COUNTER: AtomicUsize = AtomicUsize::new(0);
+
 pub fn app_render(state: &mut State) {
+    let tick = COUNTER.fetch_add(1, Ordering::Relaxed);
+    println!("Tick {tick}");
     let (frame, reconfigure_after_present) = match state.surface.get_current_texture() {
         CurrentSurfaceTexture::Success(frame) => (frame, false),
         CurrentSurfaceTexture::Suboptimal(frame) => (frame, true),
@@ -26,7 +32,7 @@ pub fn app_render(state: &mut State) {
         }
     };
     let frame_view = frame.texture.create_view(&TextureViewDescriptor::default());
-    let eye = Vec3::new(0.0, 0.7, 4.0);
+    let eye = Vec3::new(0.0, 0.0, 4.0);
     let target = Vec3::ZERO;
     let up = Vec3::Y;
     let view_matrix = camera::rh::view::look_at_mat4(eye, target, up);

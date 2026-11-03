@@ -8,7 +8,7 @@ pub fn get_uniform_bind_group_layout(device: &Device) -> BindGroupLayout {
         label: Some("Camera Bind Group Layout"),
         entries: &[BindGroupLayoutEntry {
             binding: 0,
-            visibility: ShaderStages::VERTEX,
+            visibility: ShaderStages::VERTEX | ShaderStages::FRAGMENT,
             ty: BindingType::Buffer {
                 ty: BufferBindingType::Uniform,
                 has_dynamic_offset: false,

@@ -22,11 +22,20 @@ pub fn append_node(
             let Some(positions) = reader.read_positions() else {
                 continue;
             };
+            let Some(normals) = reader.read_normals() else {
+                continue;
+            };
             let base_vertex = vertices.len() as u32;
             let color = primitive.material().pbr_metallic_roughness().base_color_factor();
-            for position in positions {
+            for (position, normal) in positions.zip(normals) {
                 let position = world_transform.transform_point3(Vec3::from_array(position));
-                vertices.push(Vertex { position: position.to_array(), color });
+                let normal_matrix = world_transform.inverse().transpose();
+                let normal = normal_matrix.transform_vector3(Vec3::from_array(normal)).normalize();
+                vertices.push(Vertex {
+                    position: position.to_array(),
+                    color,
+                    normal: normal.to_array(),
+                });
             }
             if let Some(indices_iter) = reader.read_indices() {
                 indices.extend(indices_iter.into_u32().map(|index| base_vertex + index));

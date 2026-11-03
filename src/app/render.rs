@@ -40,11 +40,19 @@ pub fn app_render(state: &mut State) {
     let projection_matrix =
         camera::rh::proj::directx::perspective(45.0_f32.to_radians(), aspect, 0.1, 100.0);
     let model_matrix = Mat4::IDENTITY;
-    let mvp = projection_matrix * view_matrix * model_matrix;
     state.queue.write_buffer(
         &state.uniform_buffer,
         0,
-        bytes_of(&Uniforms { mvp: mvp.to_cols_array_2d() }),
+        bytes_of(&Uniforms {
+            view_proj: (projection_matrix * view_matrix).to_cols_array_2d(),
+            model: model_matrix.to_cols_array_2d(),
+            normal_matrix: model_matrix.inverse().transpose().to_cols_array_2d(),
+            camera_position: [eye.x, eye.y, eye.z, 1.0],
+            light_direction: [-0.5, 0.8, 0.4, 0.0],
+            light_color: [1.0, 0.92, 0.78, 1.0],
+            ambient_color: [0.12, 0.15, 0.22, 1.0],
+            light_params: [0.35, 32.0, 0.0, 0.0],
+        }),
     );
     let mut command_encoder = get_wgpu_command_encoder(&state.device);
     {

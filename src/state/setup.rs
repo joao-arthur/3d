@@ -1,13 +1,22 @@
 use std::sync::Arc;
 
+use glam::{Quat, Vec3};
+use wgpu::{
+    BufferUsages,
+    util::{BufferInitDescriptor, DeviceExt},
+};
 use winit::event_loop::ActiveEventLoop;
 
-use crate::state::{
-    get_depth_buffer::get_depth_buffer, get_model::get_model,
-    get_uniform_bind_group::get_uniform_bind_group,
-    get_uniform_bind_group_layout::get_uniform_bind_group_layout,
-    get_uniform_buffer::get_uniform_buffer, pipeline_layout::get_wgpu_pipeline_layout,
-    render_pipeline::get_wgpu_render_pipeline, shader_module::get_wgpu_shader_module, state::State,
+use crate::{
+    data::instance::{Instance, InstanceRaw},
+    state::{
+        get_depth_buffer::get_depth_buffer, get_model::get_model,
+        get_uniform_bind_group::get_uniform_bind_group,
+        get_uniform_bind_group_layout::get_uniform_bind_group_layout,
+        get_uniform_buffer::get_uniform_buffer, pipeline_layout::get_wgpu_pipeline_layout,
+        render_pipeline::get_wgpu_render_pipeline, shader_module::get_wgpu_shader_module,
+        state::State,
+    },
 };
 
 use super::{
@@ -53,6 +62,43 @@ pub async fn state_setup(event_loop: &ActiveEventLoop) -> Result<State, SetupErr
     let render_pipeline =
         get_wgpu_render_pipeline(&device, &pipeline_layout, &shader_module, &texture_format);
     let (texture, texture_view) = get_depth_buffer(&device, (size.width, size.height));
+    let instances = vec![
+        Instance {
+            position: Vec3::new(-5.0, 0.0, -5.0),
+            rotation: Quat::IDENTITY,
+            scale: Vec3::ONE,
+        },
+        Instance {
+            position: Vec3::new(0.0, 0.0, -5.0),
+            rotation: Quat::IDENTITY,
+            scale: Vec3::ONE,
+        },
+        Instance {
+            position: Vec3::new(5.0, 0.0, -5.0),
+            rotation: Quat::IDENTITY,
+            scale: Vec3::ONE,
+        },
+        Instance {
+            position: Vec3::new(-5.0, 0.0, 0.0),
+            rotation: Quat::IDENTITY,
+            scale: Vec3::ONE,
+        },
+        Instance { position: Vec3::new(0.0, 0.0, 0.0), rotation: Quat::IDENTITY, scale: Vec3::ONE },
+        Instance { position: Vec3::new(5.0, 0.0, 0.0), rotation: Quat::IDENTITY, scale: Vec3::ONE },
+        Instance {
+            position: Vec3::new(-5.0, 0.0, 5.0),
+            rotation: Quat::IDENTITY,
+            scale: Vec3::ONE,
+        },
+        Instance { position: Vec3::new(0.0, 0.0, 5.0), rotation: Quat::IDENTITY, scale: Vec3::ONE },
+        Instance { position: Vec3::new(5.0, 0.0, 5.0), rotation: Quat::IDENTITY, scale: Vec3::ONE },
+    ];
+    let instance_data: Vec<InstanceRaw> = instances.iter().map(Instance::to_raw).collect();
+    let instance_buffer = device.create_buffer_init(&BufferInitDescriptor {
+        label: Some("Tree Instance Buffer"),
+        contents: bytemuck::cast_slice(&instance_data),
+        usage: BufferUsages::VERTEX,
+    });
 
     Ok(State {
         window,
@@ -67,5 +113,7 @@ pub async fn state_setup(event_loop: &ActiveEventLoop) -> Result<State, SetupErr
         uniform_bind_group,
         texture,
         texture_view,
+        instance_buffer,
+        instances,
     })
 }

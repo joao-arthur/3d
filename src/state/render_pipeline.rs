@@ -5,7 +5,7 @@ use wgpu::{
     ShaderModule, StencilState, TextureFormat, VertexState,
 };
 
-use crate::data::vertex::Vertex;
+use crate::data::{instance::InstanceRaw, vertex::Vertex};
 
 pub fn get_wgpu_render_pipeline(
     device: &Device,
@@ -20,7 +20,7 @@ pub fn get_wgpu_render_pipeline(
             module: shader,
             entry_point: Some("vs_main"),
             compilation_options: PipelineCompilationOptions::default(),
-            buffers: &[Some(Vertex::layout())],
+            buffers: &[Some(Vertex::layout()), Some(InstanceRaw::layout())],
         },
         primitive: PrimitiveState {
             topology: PrimitiveTopology::TriangleList,

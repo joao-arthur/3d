@@ -23,4 +23,6 @@ pub struct State {
     pub texture_view: TextureView,
     // pipeline_render: Option<RenderPipeline>,
     // vertex_buffer: Option<Buffer>,
+    pub instance_buffer: Buffer,
+    pub instances: Vec<crate::data::instance::Instance>,
 }

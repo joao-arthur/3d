@@ -15,7 +15,6 @@ static COUNTER: AtomicUsize = AtomicUsize::new(0);
 
 pub fn app_render(state: &mut State) {
     let tick = COUNTER.fetch_add(1, Ordering::Relaxed);
-    println!("Tick {tick}");
     let (frame, reconfigure_after_present) = match state.surface.get_current_texture() {
         CurrentSurfaceTexture::Success(frame) => (frame, false),
         CurrentSurfaceTexture::Suboptimal(frame) => (frame, true),
@@ -32,7 +31,7 @@ pub fn app_render(state: &mut State) {
         }
     };
     let frame_view = frame.texture.create_view(&TextureViewDescriptor::default());
-    let eye = Vec3::new(0.0, 0.0, 4.0);
+    let eye = Vec3::new(tick as f32 / 100f32, tick as f32 / 100f32, tick as f32 / 100f32);
     let target = Vec3::ZERO;
     let up = Vec3::Y;
     let view_matrix = camera::rh::view::look_at_mat4(eye, target, up);
@@ -45,8 +44,6 @@ pub fn app_render(state: &mut State) {
         0,
         bytes_of(&Uniforms {
             view_proj: (projection_matrix * view_matrix).to_cols_array_2d(),
-            model: model_matrix.to_cols_array_2d(),
-            normal_matrix: model_matrix.inverse().transpose().to_cols_array_2d(),
             camera_position: [eye.x, eye.y, eye.z, 1.0],
             light_direction: [-0.5, 0.8, 0.4, 0.0],
             light_color: [1.0, 0.92, 0.78, 1.0],
@@ -61,8 +58,9 @@ pub fn app_render(state: &mut State) {
         render_pass.set_pipeline(&state.render_pipeline);
         render_pass.set_bind_group(0, &state.uniform_bind_group, &[]);
         render_pass.set_vertex_buffer(0, state.model.vertex_buffer.slice(..));
+        render_pass.set_vertex_buffer(1, state.instance_buffer.slice(..));
         render_pass.set_index_buffer(state.model.index_buffer.slice(..), IndexFormat::Uint32);
-        render_pass.draw_indexed(0..state.model.index_count, 0, 0..1);
+        render_pass.draw_indexed(0..state.model.index_count, 0, 0..state.instances.len() as u32);
     }
     state.queue.submit([command_encoder.finish()]);
     state.queue.present(frame);

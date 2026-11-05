@@ -12,8 +12,6 @@ pub fn get_uniform_buffer(device: &Device) -> Buffer {
         label: Some("Camera Uniform Buffer"),
         contents: bytes_of(&Uniforms {
             view_proj: Mat4::IDENTITY.to_cols_array_2d(),
-            model: Mat4::IDENTITY.to_cols_array_2d(),
-            normal_matrix: Mat4::IDENTITY.to_cols_array_2d(),
             camera_position: [0.0, 0.0, 4.0, 1.0],
             light_direction: [-0.5, 0.8, 0.4, 0.0],
             light_color: [1.0, 0.92, 0.78, 1.0],
